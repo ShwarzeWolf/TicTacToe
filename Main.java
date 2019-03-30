@@ -1,13 +1,10 @@
 package TicTacToe;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
-
-    // public static boolean isCorrectInput(char[][] field, int x, int y){
-    //   for (int i = 3)
-    //}
 
     public static void drawField(char[][] field) {
         System.out.println("---------");
@@ -93,7 +90,7 @@ public class Main {
         String _y = "";
 
 
-        do {
+      /*  do {
             System.out.print("Enter the coordinates: ");
 
             _x = scanner.next();
@@ -104,10 +101,23 @@ public class Main {
         int x = Integer.parseInt(_x) - 1;
         int y = Integer.parseInt(_y) - 1;
 
-          field[x][y] = 'X';
+        field[y][x] = 'X';
+        drawField(field);*/
+
+        System.out.println("Making move level \"easy\"");
+        boolean gone = false;
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j)
+                if (field[i][j] == ' ') {
+                    field[i][j] = 'X';
+                    gone = true;
+                    break;
+                }
+if (gone)
+    break;
+        }
+
         drawField(field);
-
-
     }
 
     static boolean checkValues(String _y) {
