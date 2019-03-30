@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Main {
 
-
     public static void drawField(char[][] field) {
         System.out.println("---------");
         for (int i = 0; i < 3; ++i) {
@@ -60,58 +59,58 @@ public class Main {
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void makeHumanMove(char[][] field){
+        final Scanner scanner = new Scanner(System.in);
 
+        String _x = "";
+        String _y = "";
+
+        do {
+            System.out.print("Enter the coordinates: ");
+
+            _x = scanner.next();
+            _y = scanner.next();
+        }
+        while (!(checkValues(_x) && checkValues(_y) && ceilIsEmpty(field, _x, _y)));
+
+        int x = Integer.parseInt(_x) - 1;
+        int y = Integer.parseInt(_y) - 1;
+
+        field[y][x] = 'X';
+    }
+
+    public static void makeAIMove(char [][] field){
+        System.out.println("Making move level \"easy\"");
+
+        boolean gone = false;
+        for (int i = 0; i < 3; ++i)
+            for (int j = 0; j < 3; ++j)
+                if (field[i][j] == ' ') {
+                    field[i][j] = 'O';
+                    return;
+
+        }
+    }
+    public static void main(String[] args) {
 
         char[][] field = new char[3][3];
 
-        //initial filed state
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; ++j) {
                 field[i][j] = ' ';
             }
         }
 
-        final Scanner scanner = new Scanner(System.in);
-
-        String _x = "";
-        String _y = "";
+        drawField(field);
 
         while (true) {
+            makeHumanMove(field);
             drawField(field);
-
-            do {
-                System.out.print("Enter the coordinates: ");
-
-                _x = scanner.next();
-                _y = scanner.next();
-            }
-            while (!(checkValues(_x) && checkValues(_y) && ceilIsEmpty(field, _x, _y)));
-
-            int x = Integer.parseInt(_x) - 1;
-            int y = Integer.parseInt(_y) - 1;
-
-            field[y][x] = 'X';
-
-            drawField(field);
-
             if (!checkField(field))
                 break;
 
-            System.out.println("Making move level \"easy\"");
-
-            boolean gone = false;
-            for (int i = 0; i < 3; ++i) {
-                for (int j = 0; j < 3; ++j)
-                    if (field[i][j] == ' ') {
-                        field[i][j] = 'O';
-                        gone = true;
-                        break;
-                    }
-                if (gone)
-                    break;
-            }
-
+            makeAIMove(field);
+            drawField(field);
             if (!checkField(field))
                 break;
         }
