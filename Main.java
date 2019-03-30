@@ -21,26 +21,26 @@ public class Main {
         System.out.println();
     }
 
-    public static void checkField(char[][] field) {
+    public static boolean checkField(char[][] field) {
         for (int i = 0; i < 3; ++i) {
             if (field[i][0] == field[i][1] && field[i][0] == field[i][2] && field[i][0] != ' ') {
                 System.out.print(field[i][0] + " wins");
-                return;
+                return false;
             }
 
             if (field[0][i] == field[1][i] && field[0][i] == field[2][i] && field[0][i] != ' ') {
                 System.out.print(field[0][i] + " wins");
-                return;
+                return false;
             }
 
         }
 
         if (field[0][0] == field[1][1] && field[0][0] == field[2][2] && field[0][0] != ' ') {
             System.out.println(field[0][0] + " wins");
-            return;
-        } else if (field[0][2] == field[1][1] && field[0][2] == field[2][0] && field[0][0] != ' ') {
+            return false;
+        } else if (field[0][2] == field[1][1] && (field[1][1] == field[2][0]) && (field[1][1] != ' ')) {
             System.out.println(field[0][2] + " wins");
-            return;
+            return false;
         }
 
         boolean moreMoves = false;
@@ -54,9 +54,10 @@ public class Main {
 
         if (!moreMoves) {
             System.out.println("Draw");
-        } else {
-            System.out.println("Game not finished");
+            return false;
         }
+
+        return true;
     }
 
     public static void main(String[] args) {
@@ -71,53 +72,49 @@ public class Main {
             }
         }
 
-        field[0][0] = 'X';
-        field[0][1] = ' ';
-        field[0][2] = 'O';
-
-        field[1][0] = ' ';
-        field[1][1] = 'O';
-        field[1][2] = ' ';
-
-        field[2][0] = 'X';
-        field[2][1] = ' ';
-        field[2][2] = ' ';
-
-        drawField(field);
-
         final Scanner scanner = new Scanner(System.in);
+
         String _x = "";
         String _y = "";
 
+        while (true) {
+            drawField(field);
 
-      /*  do {
-            System.out.print("Enter the coordinates: ");
+            do {
+                System.out.print("Enter the coordinates: ");
 
-            _x = scanner.next();
-            _y = scanner.next();
-        }
-        while (!(checkValues(_x) && checkValues(_y) && ceilIsEmpty(field, _x, _y)));
+                _x = scanner.next();
+                _y = scanner.next();
+            }
+            while (!(checkValues(_x) && checkValues(_y) && ceilIsEmpty(field, _x, _y)));
 
-        int x = Integer.parseInt(_x) - 1;
-        int y = Integer.parseInt(_y) - 1;
+            int x = Integer.parseInt(_x) - 1;
+            int y = Integer.parseInt(_y) - 1;
 
-        field[y][x] = 'X';
-        drawField(field);*/
+            field[y][x] = 'X';
 
-        System.out.println("Making move level \"easy\"");
-        boolean gone = false;
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j)
-                if (field[i][j] == ' ') {
-                    field[i][j] = 'X';
-                    gone = true;
+            drawField(field);
+
+            if (!checkField(field))
+                break;
+
+            System.out.println("Making move level \"easy\"");
+
+            boolean gone = false;
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j)
+                    if (field[i][j] == ' ') {
+                        field[i][j] = 'O';
+                        gone = true;
+                        break;
+                    }
+                if (gone)
                     break;
-                }
-if (gone)
-    break;
-        }
+            }
 
-        drawField(field);
+            if (!checkField(field))
+                break;
+        }
     }
 
     static boolean checkValues(String _y) {
