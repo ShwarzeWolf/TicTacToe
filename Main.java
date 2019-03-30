@@ -59,8 +59,7 @@ public class Main {
         return true;
     }
 
-    public static void makeHumanMove(char[][] field){
-        final Scanner scanner = new Scanner(System.in);
+    public static void makeHumanMove(char[][] field, char symbol,  Scanner scanner){
 
         String _x = "";
         String _y = "";
@@ -76,43 +75,19 @@ public class Main {
         int x = Integer.parseInt(_x) - 1;
         int y = Integer.parseInt(_y) - 1;
 
-        field[y][x] = 'X';
+        field[y][x] = symbol;
     }
 
-    public static void makeAIMove(char [][] field){
+    public static void makeAIMove(char [][] field, char symbol){
         System.out.println("Making move level \"easy\"");
 
         boolean gone = false;
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)
                 if (field[i][j] == ' ') {
-                    field[i][j] = 'O';
+                    field[i][j] = symbol;
                     return;
 
-        }
-    }
-    public static void main(String[] args) {
-
-        char[][] field = new char[3][3];
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; ++j) {
-                field[i][j] = ' ';
-            }
-        }
-
-        drawField(field);
-
-        while (true) {
-            makeHumanMove(field);
-            drawField(field);
-            if (!checkField(field))
-                break;
-
-            makeAIMove(field);
-            drawField(field);
-            if (!checkField(field))
-                break;
         }
     }
 
@@ -132,7 +107,6 @@ public class Main {
         return correctInput;
     }
 
-
     static boolean ceilIsEmpty(char[][] field, String _x, String _y) {
 
         int x = Integer.parseInt(_x) - 1;
@@ -140,4 +114,63 @@ public class Main {
 
         return (field[y][x] == ' ');
     }
+
+
+
+    public static void main(String[] args) {
+
+        char[][] field = new char[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; ++j) {
+                field[i][j] = ' ';
+            }
+        }
+
+        final Scanner scanner = new Scanner(System.in);
+
+
+
+        while (true) {
+            System.out.print("Input command: ");
+
+            String command = scanner.next();
+
+            if (command.equals("start")) {
+            String user1 = scanner.next();
+            String user2 = scanner.next();
+
+            if (user1.isEmpty() || user2.isEmpty()) {
+                System.out.println("Bad parametrs!");
+                continue;
+            }
+
+                drawField(field);
+
+                while (true) {
+                    if (user1.equals("user"))
+                        makeHumanMove(field, 'X', scanner);
+                    else
+                        makeAIMove(field, 'X');
+
+                    drawField(field);
+                    if (!checkField(field))
+                        break;
+
+
+                    if (user2.equals("user"))
+                        makeHumanMove(field, 'O', scanner);
+                    else
+                        makeAIMove(field, 'O');
+                    drawField(field);
+                    if (!checkField(field))
+                        break;
+                }
+            }
+
+            if (command.equals("exit"))
+                break;
+        }
+
+        }
 }
